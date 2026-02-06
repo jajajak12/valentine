@@ -5,21 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Untuk Aulia Azzahra 💘</title>
 
-  <!-- Importmap untuk bare imports (bersih & recommended) -->
-  <script type="importmap">
-  {
-    "imports": {
-      "react": "https://esm.sh/react@18.3.1?dev&jsx",
-      "react/jsx-runtime": "https://esm.sh/react@18.3.1/jsx-runtime?dev&jsx",
-      "react/jsx-dev-runtime": "https://esm.sh/react@18.3.1/jsx-dev-runtime?dev&jsx",
-      "react-dom/client": "https://esm.sh/react-dom@18.3.1/client?dev&jsx"
-    }
-  }
-  </script>
-
-  <!-- Loader TSX untuk transform JSX di browser -->
-  <script type="module" src="https://esm.sh/tsx"></script>
-
   <style>
     body {
       margin: 0;
@@ -44,10 +29,15 @@
 <body>
   <div id="root"></div>
 
-  <!-- Script JSX pakai type="text/babel" agar tsx transform otomatis -->
-  <script type="text/babel">
-    import React, { useState } from "react";
-    import { createRoot } from "react-dom/client";
+  <!-- Audio: Tes link ini di tab baru → harus download/play langsung MP3 -->
+  <audio id="bgMusic" loop preload="auto" muted>
+    <source src="https://www.dropbox.com/scl/fi/girt936o6f82od8lddlk6/Someone-You-Loved-Lewis-Capaldi-Lower-Key-Piano-Karaoke.mp3?rlkey=xpnmsivkmpexuj8fuuk2iscsz&st=a4l4ngz4&dl=1" type="audio/mpeg">
+    Browser ga support audio.
+  </audio>
+
+  <script type="module">
+    import React from 'https://esm.sh/react@18.3.1';
+    import { createRoot } from 'https://esm.sh/react-dom@18.3.1/client';
 
     const NO_PHRASES = [
       "Beneran?",
@@ -61,19 +51,29 @@
     ];
 
     function App() {
-      const [noClicks, setNoClicks] = useState(0);
-      const [isValentine, setIsValentine] = useState(false);
+      const [noClicks, setNoClicks] = React.useState(0);
+      const [isValentine, setIsValentine] = React.useState(false);
+      const [musicPlaying, setMusicPlaying] = React.useState(false);
+      const audioRef = React.useRef(null);
 
       const yesButtonSize = Math.min(16 + noClicks * 18, 120);
 
       const firstImg = "https://i.ibb.co/0jCcMkYk/Whats-App-Image-2026-02-06-at-15-29-58.jpg";
-      // GIF kedua mungkin masih invalid, aku kasih placeholder dulu (ganti kalau sudah upload)
-      const secondImg = "https://i.ibb.co.com/Z161YFHg/Whats-App-Video2026-02-06at15-38-20-ezgif-com-video-to-gif-converter.gif"; // GIF "yay" sementara
+      const secondImg = "https://i.ibb.co/Z161YFHg/Whats-App-Video2026-02-06at15-38-20-ezgif-com-video-to-gif-converter.gif"; // ganti kalau 404
+
+      React.useEffect(() => {
+        audioRef.current = document.getElementById("bgMusic");
+        if (audioRef.current) {
+          audioRef.current.volume = 0.3;
+        }
+      }, []);
 
       const handleNo = () => setNoClicks(c => c + 1);
 
       const handleYes = () => {
         setIsValentine(true);
+
+        // Efek hati
         for (let i = 0; i < 50; i++) {
           const heart = document.createElement("div");
           heart.className = "heart";
@@ -85,10 +85,17 @@
           document.body.appendChild(heart);
           setTimeout(() => heart.remove(), 10000);
         }
+
+        if (audioRef.current) {
+          audioRef.current.muted = false;
+          audioRef.current.play()
+            .then(() => setMusicPlaying(true))
+            .catch(e => console.log("Audio play error:", e));
+        }
       };
 
-      return (
-        <div style={{
+      return React.createElement("div", {
+        style: {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -97,77 +104,92 @@
           textAlign: "center",
           padding: "10px",
           boxSizing: "border-box",
-        }}>
-          {!isValentine ? (
-            <>
-              <img
-                src={firstImg}
-                alt="Kamu cantik banget"
-                style={{
-                  maxWidth: "85%",
-                  maxHeight: "45vh",
-                  borderRadius: "16px",
-                  boxShadow: "0 8px 25px rgba(255,105,180,0.4)",
-                  marginBottom: "24px",
-                  objectFit: "cover",
-                }}
-              />
-              <h1 style={{ fontSize: "2.4rem", margin: "0 0 1.5rem" }}>
-                Kamu Mau jadi valentine ku ga? 💘
-              </h1>
-
-              <div style={{ display: "flex", gap: "20px", flexWrap: "wrap", justifyContent: "center" }}>
-                <button
-                  onClick={handleYes}
-                  style={{
-                    fontSize: `${yesButtonSize}px`,
-                    minWidth: "120px",
-                    padding: "12px 32px",
-                    background: "linear-gradient(45deg, #28a745, #34d058)",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "50px",
-                    boxShadow: "0 4px 15px rgba(40,167,69,0.5)",
-                    cursor: "pointer",
-                  }}
-                >
-                  Yes 💕
-                </button>
-
-                <button
-                  onClick={handleNo}
-                  style={{
-                    fontSize: "18px",
-                    padding: "12px 32px",
-                    background: "#dc3545",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "50px",
-                    cursor: noClicks > 4 ? "not-allowed" : "pointer",
-                  }}
-                >
-                  {noClicks === 0 ? "No 😢" : NO_PHRASES[Math.min(noClicks - 1, NO_PHRASES.length - 1)]}
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <img
-                src={secondImg}
-                alt="Yeayyy!"
-                style={{ maxWidth: "90%", maxHeight: "65vh", borderRadius: "16px" }}
-              />
-              <h1 style={{ fontSize: "4rem", color: "#ff69b4", marginTop: "20px", textShadow: "0 0 20px #ffb6c1" }}>
-                Yayyy!!! 💖🎉 Kamu valentine aku sekarang!
-              </h1>
-            </>
-          )}
-        </div>
+        }
+      },
+        !isValentine ? React.createElement(React.Fragment, null,
+          React.createElement("img", {
+            src: firstImg,
+            alt: "Kamu cantik banget",
+            style: {
+              maxWidth: "85%",
+              maxHeight: "45vh",
+              borderRadius: "16px",
+              boxShadow: "0 8px 25px rgba(255,105,180,0.4)",
+              marginBottom: "24px",
+              objectFit: "cover"
+            }
+          }),
+          React.createElement("h1", {
+            style: { fontSize: "2.4rem", margin: "0 0 1.5rem" }
+          }, "Kamu Mau jadi valentine ku ga? 💘"),
+          React.createElement("div", {
+            style: { display: "flex", gap: "20px", flexWrap: "wrap", justifyContent: "center" }
+          },
+            React.createElement("button", {
+              onClick: handleYes,
+              style: {
+                fontSize: `${yesButtonSize}px`,
+                minWidth: "120px",
+                padding: "12px 32px",
+                background: "linear-gradient(45deg, #28a745, #34d058)",
+                color: "white",
+                border: "none",
+                borderRadius: "50px",
+                boxShadow: "0 4px 15px rgba(40,167,69,0.5)",
+                cursor: "pointer"
+              }
+            }, "Yes 💕"),
+            React.createElement("button", {
+              onClick: handleNo,
+              style: {
+                fontSize: "18px",
+                padding: "12px 32px",
+                background: "#dc3545",
+                color: "white",
+                border: "none",
+                borderRadius: "50px",
+                cursor: noClicks > 4 ? "not-allowed" : "pointer"
+              }
+            }, noClicks === 0 ? "No 😢" : NO_PHRASES[Math.min(noClicks - 1, NO_PHRASES.length - 1)])
+          )
+        ) : React.createElement(React.Fragment, null,
+          React.createElement("img", {
+            src: secondImg,
+            alt: "Yeayyy!",
+            style: { maxWidth: "90%", maxHeight: "65vh", borderRadius: "16px" }
+          }),
+          React.createElement("h1", {
+            style: { fontSize: "4rem", color: "#ff69b4", marginTop: "20px", textShadow: "0 0 20px #ffb6c1" }
+          }, "Yayyy!!! 💖🎉 Kamu valentine aku sekarang!"),
+          // Tombol kontrol musik opsional
+          React.createElement("button", {
+            onClick: () => {
+              if (audioRef.current) {
+                if (musicPlaying) {
+                  audioRef.current.pause();
+                  setMusicPlaying(false);
+                } else {
+                  audioRef.current.play();
+                  setMusicPlaying(true);
+                }
+              }
+            },
+            style: {
+              marginTop: "20px",
+              padding: "10px 24px",
+              fontSize: "18px",
+              background: musicPlaying ? "#ff69b4" : "#888",
+              color: "white",
+              border: "none",
+              borderRadius: "50px",
+              cursor: "pointer"
+            }
+          }, musicPlaying ? "Pause Lagu 💔" : "Play Lagu 🎵")
+        )
       );
     }
 
-    const root = document.getElementById("root");
-    createRoot(root).render(<App />);
+    createRoot(document.getElementById("root")).render(React.createElement(App));
   </script>
 </body>
 </html>
