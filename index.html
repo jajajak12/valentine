@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Valentine Invitation 💘</title>
+  <style>
+    body { margin:0; overflow:hidden; background: linear-gradient(to bottom, #fff0f5, #ffe4e1); }
+    .heart {
+      position: fixed;
+      top: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+      animation: flyHeart linear forwards;
+    }
+    @keyframes flyHeart {
+      0% { opacity:1; transform: translate(-50%,0) scale(1); }
+      100% { opacity:0; transform: translate(-50%,-150vh) scale(0.3) rotate(720deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module">
+    import React, { useState } from "https://esm.sh/react@18.2.0";
+    import { createRoot } from "https://esm.sh/react-dom@18.2.0/client";
+
+    // Paste seluruh kode App kamu di sini (NO_PHRASES, function App, dll)
+    // Contoh singkat:
+    const NO_PHRASES = [ ... ]; // copy dari code kamu
+
+    function App() {
+      // ... full App code kamu, termasuk handleYes dengan loop 40 hati
+      // Pastikan handleYes pakai document.body.appendChild seperti sebelumnya
+    }
+
+    createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
