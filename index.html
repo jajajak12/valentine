@@ -11,6 +11,7 @@
       overflow: hidden;
       background: linear-gradient(to bottom, #fff0f5, #ffe4e1);
     }
+    h1 { color: #e91e63; margin: 0 20px; }
     .heart {
       position: fixed;
       top: 100vh;
@@ -19,14 +20,8 @@
       animation: flyHeart linear forwards;
     }
     @keyframes flyHeart {
-      0% {
-        opacity: 1;
-        transform: translate(-50%, 0) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(-50%, -150vh) scale(0.3) rotate(720deg);
-      }
+      0% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -150vh) scale(0.3) rotate(720deg); }
     }
   </style>
 </head>
