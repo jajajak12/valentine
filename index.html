@@ -56,7 +56,8 @@
       const [musicPlaying, setMusicPlaying] = React.useState(false);
       const audioRef = React.useRef(null);
 
-      const yesButtonSize = Math.min(16 + noClicks * 18, 120);
+      const yesFontSize = Math.min(18 + noClicks * 20, 140);     // px
+      const yesPadding  = `${12 + noClicks * 5}px ${32 + noClicks * 12}px`; // naik perlahan
 
       const firstImg = "https://i.ibb.co/0jCcMkYk/Whats-App-Image-2026-02-06-at-15-29-58.jpg";
       const secondImg = "https://i.ibb.co.com/600xHshp/0212-ezgif-com-video-to-gif-converter.gif"; // ganti kalau 404
